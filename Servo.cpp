@@ -33,14 +33,12 @@ void Servo::On() {
 		gpioServo(this->Pin_GPIO, 1000);
 	} else {
 		gpioServo(this->Pin_GPIO, 500);
-		//gpioServo(this->Pin_GPIO, 0);
 	}
 }
 
 void Servo::Off() {
 	if (this->inv == 0) {
 		gpioServo(this->Pin_GPIO, 500);
-		//gpioServo(this->Pin_GPIO, 0);
 	} else {
 		gpioServo(this->Pin_GPIO, 1000);
 	}
@@ -51,6 +49,6 @@ void Servo::Sleep() {
 }
 
 ostream& operator<< (ostream& os, const Servo& s) {
-        os << s.Pin_GPIO;
-        return os;
-    }
+    os << s.Pin_GPIO;
+    return os;
+}

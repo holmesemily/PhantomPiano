@@ -5,7 +5,7 @@
 #ifndef MIDI_PARSER_OPTIONS_H
 #define MIDI_PARSER_OPTIONS_H
 
-#define USE_STL true
+#define USE_STL false
 #define USE_BIG_ENDIAN false
 
 

@@ -33,7 +33,7 @@ char* Morceau::getPath() {
 void Morceau::getInformation() {
 	auto& header = this->getHeader();
 
-	cout << "	Now playing " << this->getTitre()
+	cout << "Now playing " << this->getTitre()
 	     << " from file " << this->getPath() << endl;
 	cout << "File contents:" << endl;
 	cout << "	Header:" << endl;

@@ -1,14 +1,14 @@
 #ifndef MORCEAU_H
 #define MORCEAU_H
-#include <string>
+
 #include <cstring>
 #include <iostream>
-#include "lib/Midi.h"
-using namespace std;
-
 #include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
 
+#include "lib/Midi.h"
+
+using namespace std;
+namespace fs = std::experimental::filesystem;
 
 class Morceau : public Midi {
     private:
