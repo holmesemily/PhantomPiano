@@ -16,8 +16,7 @@ Piano::Piano(vector<int> pins, vector<int> inv, int startIndex = 0):startIndex(s
 		}
 	}
 
-    if(gpioInitialise() < 0) return -1; // Init GPIO
-   	gpioSetSignalFunc(SIGINT, this->sleep);
+    if(gpioInitialise() < 0) exit(1); // Init GPIO
 
     for(auto it = inv.begin(); it != inv.end(); ++it) {
 		this->servos[it - inv.begin()].setInv(*it);
@@ -33,7 +32,7 @@ Piano::~Piano() {
 
 void Piano::sleep(int signum) {
 	for(int i = 0; i < PIANO_SIZE; i++) {
-		this->servos[i].noteSleep();
+		servos[i].noteSleep();
 	}	
 }
 
@@ -50,4 +49,3 @@ ostream& operator<< (ostream& os, const Piano& p) {
 Servo& Piano::operator[] (int index) {
     return this->servos[index - this->startIndex];
 }
-

@@ -1,6 +1,7 @@
 #ifndef PIANO_H
 #define PIANO_H
 
+#include <signal.h>
 #include <iostream>
 #include <pigpio.h>
 #include <vector>
@@ -15,7 +16,7 @@ class Piano {
     private:
         Servo* servos;
         int startIndex;
-
+        static Piano* instancePtr;
     public:
         Piano();
         Piano(vector<int> pins, vector<int> inv, int startIndex);
