@@ -19,17 +19,10 @@ using namespace chrono;
 // Variable declaration
 vector<int> mappingGPIO{12, 1, 16, 1, 23, 18, 1, 25, 1, 24}; 
 vector<int> mappingInv{0, 0, 1, 0, 1, 0, 0, 0, 0, 1}; 
-Piano* piano;
 
 char* path;
 char* title;
 char  silent = 0;
-
-void stop(int signum) {
-	for(auto it = mappingNoteGPIO.begin(); it != mappingNoteGPIO.end(); ++it) {
-		servos[it - mappingNoteGPIO.begin()].Sleep();
-	}	
-}
 
 int main(int argc, char *argv[]) {
 	if (argc < 3 || argc > 4) {
@@ -48,7 +41,7 @@ int main(int argc, char *argv[]) {
 	title = argv[1];
 	path = argv[2];
 
-    piano = new Piano(mappingGPIO, mappingInv, baseIndex);
+    Piano piano(mappingGPIO, mappingInv, baseIndex);
 	if(!silent) cout << piano;
 
 	// ====================================
@@ -79,14 +72,12 @@ int main(int argc, char *argv[]) {
             if(status == MidiType::MidiMessageStatus::NoteOn) {		// Note ON -> Play corresponding GPIO
                 n = (char)midiEvent->getNote();
                 if(midiEvent->getVelocity()) {
-                    p[n].noteOn();
-                    gpioSleep(PI_TIME_RELATIVE, 0, 10);
+                    piano[n].noteOn();
                 } else {
-                    p[n].noteOff();
-                    gpioSleep(PI_TIME_RELATIVE, 0, 200000);
+                    piano[n].noteOff();
                 }
             }
-        if(!silent) morceau.getNoteInformation(midiEvent, trackEvent);
+            if(!silent) morceau.printNoteInformation(midiEvent, trackEvent);
         }
 	}
 

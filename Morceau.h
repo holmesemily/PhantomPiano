@@ -20,11 +20,9 @@ class Morceau : public Midi {
         Morceau(char* titre, char* path);
         void setTitre(char* titre);
         void setPath(char* path);
-        char* getTitre();
-        char* getPath();
-        Midi* getFile();
-        void printInformation();
-        long getTiming(const MTrkEvent& tEvent);
+        char* getTitre() const;
+        char* getPath() const;
+        long getTiming(const MTrkEvent& tEvent) const;
         void printNoteInformation(MidiEvent* midiEvent, const MTrkEvent& trackEvent);
         friend ostream& operator<< (ostream& os, const Morceau& m);
 };

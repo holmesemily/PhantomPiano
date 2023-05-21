@@ -22,11 +22,11 @@ void Morceau::setPath (char* path) {
 	*this = newMorceau;
 }
 
-char* Morceau::getTitre() {
+char* Morceau::getTitre() const {
 	return this->titre;
 }
 
-char* Morceau::getPath() {
+char* Morceau::getPath() const {
 	return this->path;
 }
 
@@ -43,7 +43,7 @@ ostream& operator<< (ostream& os, const Morceau& m) {
     return os;
 }
 
-long Morceau::getTiming(const MTrkEvent& tEvent) {
+long Morceau::getTiming(const MTrkEvent& tEvent) const {
 	return (long)(tEvent.getDeltaTime().getData())*(1000/(2*this->getHeader().getDivision()));
 }
 

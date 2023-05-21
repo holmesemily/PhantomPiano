@@ -20,8 +20,9 @@ class Piano {
         Piano();
         Piano(vector<int> pins, vector<int> inv, int startIndex);
         ~Piano();
+        void sleep(int signum);
         friend ostream& operator<< (ostream& os, const Piano& s);
-        int& operator[] (int index);
+        Servo& operator[] (int index);
 };
 
 #endif

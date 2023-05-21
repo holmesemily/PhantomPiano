@@ -34,6 +34,7 @@ void Servo::noteOn() {
 	} else {
 		gpioServo(this->pinGPIO, 500);
 	}
+    gpioSleep(PI_TIME_RELATIVE, 0, 10);
 }
 
 void Servo::noteOff() {
@@ -42,6 +43,7 @@ void Servo::noteOff() {
 	} else {
 		gpioServo(this->pinGPIO, 1000);
 	}
+    gpioSleep(PI_TIME_RELATIVE, 0, 10);
 }
 
 void Servo::noteSleep() {
