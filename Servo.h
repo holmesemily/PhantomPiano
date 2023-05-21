@@ -8,7 +8,7 @@ using namespace std;
 
 class Servo {
     private:
-        int Pin_GPIO;
+        int pinGPIO;
         int inv;
 
     public:
@@ -18,9 +18,9 @@ class Servo {
         void setInv(int inv);
         int getInv();
         int getGPIO();
-        void On();
-        void Off();
-        void Sleep();
+        void noteOn();
+        void noteOff();
+        void noteSleep();
         friend ostream& operator<< (ostream& os, const Servo& s);
 };
 

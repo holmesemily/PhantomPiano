@@ -1,7 +1,7 @@
 #include "Servo.h"
 
 Servo::Servo() {
-	this->Pin_GPIO = 0;
+	this->pinGPIO = 0;
 	this->inv = 0;
 }
 
@@ -9,46 +9,46 @@ Servo::Servo(int GPIO) {
 	if (GPIO < 0 || GPIO > 31) {
 		throw "Invalid GPIO. Valid GPIO pins are numbered 0 to 31.";
 	}
-	this->Pin_GPIO = GPIO;
+	this->pinGPIO = GPIO;
+}
+
+Servo::~Servo() {
+	this->pinGPIO = 0;
 }
 
 void Servo::setInv(int inv) {
 	this->inv = inv;
 }
 
-Servo::~Servo() {
-	this->Pin_GPIO = 0;
-}
-
 int Servo::getGPIO() {
-	return this->Pin_GPIO;
+	return this->pinGPIO;
 }
 
 int Servo::getInv() {
 	return this->inv;
 }
 
-void Servo::On() {
+void Servo::noteOn() {
 	if (this->inv == 0) {
-		gpioServo(this->Pin_GPIO, 1000);
+		gpioServo(this->pinGPIO, 1000);
 	} else {
-		gpioServo(this->Pin_GPIO, 500);
+		gpioServo(this->pinGPIO, 500);
 	}
 }
 
-void Servo::Off() {
+void Servo::noteOff() {
 	if (this->inv == 0) {
-		gpioServo(this->Pin_GPIO, 500);
+		gpioServo(this->pinGPIO, 500);
 	} else {
-		gpioServo(this->Pin_GPIO, 1000);
+		gpioServo(this->pinGPIO, 1000);
 	}
 }
 
-void Servo::Sleep() {
-	gpioServo(this->Pin_GPIO, 0);	
+void Servo::noteSleep() {
+	gpioServo(this->pinGPIO, 0);	
 }
 
 ostream& operator<< (ostream& os, const Servo& s) {
-    os << s.Pin_GPIO;
+    os << s.pinGPIO;
     return os;
 }

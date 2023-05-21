@@ -8,7 +8,7 @@
 #include "lib/Midi.h"
 
 #include "Morceau.h"
-#include "Servo.h"
+#include "Piano.h"
 
 using namespace std;
 using namespace chrono;
@@ -17,9 +17,10 @@ using namespace chrono;
 #define servosNumber 10
 
 // Variable declaration
-vector<int> mappingNoteGPIO{12, 1, 16, 1, 23, 18, 1, 25, 1, 24}; 
-vector<int> mappingNoteInv{0, 0, 1, 0, 1, 0, 0, 0, 0, 1}; 
-Servo servos[servosNumber];
+vector<int> mappingGPIO{12, 1, 16, 1, 23, 18, 1, 25, 1, 24}; 
+vector<int> mappingInv{0, 0, 1, 0, 1, 0, 0, 0, 0, 1}; 
+Piano* piano;
+
 char* path;
 char* title;
 char  silent = 0;
@@ -28,15 +29,6 @@ void stop(int signum) {
 	for(auto it = mappingNoteGPIO.begin(); it != mappingNoteGPIO.end(); ++it) {
 		servos[it - mappingNoteGPIO.begin()].Sleep();
 	}	
-}
-
-void printServosGPIO() {
-	cout << "=============================" << endl;
-	cout << "==== SERVO-GPIO  MATCHES ====" << endl;
-	for(auto it = mappingNoteGPIO.begin(); it != mappingNoteGPIO.end(); ++it) {
-		cout << "Note number " << it - mappingNoteGPIO.begin() + baseIndex << " is at pin " << servos[it - mappingNoteGPIO.begin()] << endl;
-	}
-	cout << "=============================" << endl;
 }
 
 int main(int argc, char *argv[]) {
@@ -56,24 +48,8 @@ int main(int argc, char *argv[]) {
 	title = argv[1];
 	path = argv[2];
 
-	// Initiate all servos to their matching note
-	for(auto it = mappingNoteGPIO.begin(); it != mappingNoteGPIO.end(); ++it) {
-		try {
-			servos[it - mappingNoteGPIO.begin()] = Servo(*it);
-		} catch (const char* msg) {
-			cerr << msg << endl;
-		}
-	}
-
-	if(!silent) printServosGPIO();
-	if(gpioInitialise() < 0) return -1; // Init GPIO
-   	gpioSetSignalFunc(SIGINT, stop);
-
-	for(auto it = mappingNoteInv.begin(); it != mappingNoteInv.end(); ++it) {
-		servos[it - mappingNoteInv.begin()].setInv(*it);
-		servos[it - mappingNoteInv.begin()].Off();
-		gpioSleep(PI_TIME_RELATIVE, 0, 200000);
-	}
+    piano = new Piano(mappingGPIO, mappingInv, baseIndex);
+	if(!silent) cout << piano;
 
 	// ====================================
 	// 				Music tiem
@@ -81,7 +57,7 @@ int main(int argc, char *argv[]) {
 
 	char n;
 	Morceau morceau(title, path);
-	if(!silent) morceau.getInformation();
+	if(!silent) cout << morceau;
 
 	auto& tracks = morceau.getTracks();
 	cout << "\nSelect track (" << morceau.getHeader().getNTracks() << " available(s)):" << endl;
@@ -103,10 +79,10 @@ int main(int argc, char *argv[]) {
             if(status == MidiType::MidiMessageStatus::NoteOn) {		// Note ON -> Play corresponding GPIO
                 n = (char)midiEvent->getNote();
                 if(midiEvent->getVelocity()) {
-                    servos[n-baseIndex].On();
+                    p[n].noteOn();
                     gpioSleep(PI_TIME_RELATIVE, 0, 10);
                 } else {
-                    servos[n-baseIndex].Off();
+                    p[n].noteOff();
                     gpioSleep(PI_TIME_RELATIVE, 0, 200000);
                 }
             }

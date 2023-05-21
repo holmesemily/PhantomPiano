@@ -12,21 +12,21 @@ namespace fs = std::experimental::filesystem;
 
 class Morceau : public Midi {
     private:
-        char* Titre;
-        char* Path;
+        char* titre;
+        char* path;
 
     public:
         Morceau();
-        Morceau(char* Titre, char* Path);
-        void setTitre (char* Titre);
-        void setPath (char* Path);
+        Morceau(char* titre, char* path);
+        void setTitre(char* titre);
+        void setPath(char* path);
         char* getTitre();
         char* getPath();
         Midi* getFile();
-        void getInformation();
+        void printInformation();
         long getTiming(const MTrkEvent& tEvent);
-        void getNoteInformation(MidiEvent* midiEvent, const MTrkEvent& trackEvent);
-        
+        void printNoteInformation(MidiEvent* midiEvent, const MTrkEvent& trackEvent);
+        friend ostream& operator<< (ostream& os, const Morceau& m);
 };
 
 #endif

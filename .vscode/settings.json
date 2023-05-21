@@ -70,6 +70,14 @@
     "memory_resource": "cpp",
     "random": "cpp",
     "utility": "cpp",
-    "*.ipp": "cpp"
-  }
+    "*.ipp": "cpp",
+    "__tree": "cpp",
+    "deque": "cpp",
+    "map": "cpp",
+    "set": "cpp",
+    "span": "cpp",
+    "unordered_set": "cpp",
+    "filesystem": "cpp",
+    "format": "cpp"
+}
 }
